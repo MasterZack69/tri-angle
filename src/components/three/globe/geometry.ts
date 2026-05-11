@@ -83,20 +83,37 @@ export function buildDottedGlobe({
 
 export async function loadMaskImage(url: string): Promise<ImageData | null> {
   if (typeof document === 'undefined') return null;
-  try {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.src = url;
-    await img.decode();
+  const w = 1024;
+  const h = 512;
 
-    const w = 1024;
-    const h = 512;
+  try {
     const canvas = document.createElement('canvas');
     canvas.width = w;
     canvas.height = h;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return null;
-    ctx.drawImage(img, 0, 0, w, h);
+
+    if ('createImageBitmap' in window) {
+      const response = await fetch(url);
+      if (!response.ok) return null;
+
+      const blob = await response.blob();
+      const bitmap = await createImageBitmap(blob, {
+        resizeWidth: w,
+        resizeHeight: h,
+        resizeQuality: 'high',
+      });
+
+      ctx.drawImage(bitmap, 0, 0, w, h);
+      bitmap.close();
+    } else {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = url;
+      await img.decode();
+      ctx.drawImage(img, 0, 0, w, h);
+    }
+
     return ctx.getImageData(0, 0, w, h);
   } catch {
     return null;
