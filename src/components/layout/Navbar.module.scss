@@ -67,7 +67,7 @@
   transition: color $dur-fast $ease-out-quart;
 
   &:hover {
-    color: var(--color-fg);
+    color: var(--color-accent);
   }
 
   &:focus-visible {
