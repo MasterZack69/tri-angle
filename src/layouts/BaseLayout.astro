@@ -1,16 +1,19 @@
 ---
+import Seo from '@components/seo/Seo.astro';
+import StructuredData from '@components/seo/StructuredData.astro';
 import '../styles/global.scss';
 import Navbar from '@components/layout/Navbar';
 
 interface Props {
-  title?: string;
-  description?: string;
+  readonly title?: string;
+  readonly description?: string;
+  readonly image?: string;
+  readonly imageAlt?: string;
+  readonly noindex?: boolean;
+  readonly canonical?: string;
 }
 
-const {
-  title = 'Tri-Angle — Independent Digital Studio',
-  description = 'A cinematic freelancing studio crafting precise digital experiences.',
-} = Astro.props;
+const { title, description, image, imageAlt, noindex, canonical } = Astro.props;
 ---
 
 <!doctype html>
@@ -21,9 +24,21 @@ const {
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <meta name="description" content={description} />
-    <meta name="theme-color" content="#050505" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="generator" content={Astro.generator} />
+    <Seo
+      title={title}
+      description={description}
+      image={image}
+      imageAlt={imageAlt}
+      noindex={noindex}
+      canonical={canonical}
+    />
+    <link rel="icon" type="image/ico" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link
       rel="preload"
       href="/fonts/Geist-Regular.woff2"
