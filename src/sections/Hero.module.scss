@@ -56,35 +56,32 @@
   align-self: center;
   display: grid;
   gap: $space-xl;
-  max-width: 56ch;
+  max-width: 64ch;
+  @include until($bp-md) {
+    max-width: 100%;
+  }
 }
 
 .title {
   font-size: $fs-display;
   font-weight: $fw-display;
   letter-spacing: -0.045em;
-  line-height: 0.92;
+  line-height: 0.95;
   color: var(--color-fg);
-  max-width: 14ch;
   display: grid;
   margin: 0;
+  font-synthesis: none;
 
   // Prevent display-scale clamp from blowing out on ultrawide
   @include from($bp-2xl) {
     font-size: clamp(5rem, 7vw, 9rem);
-    max-width: 13ch;
-  }
-
-  // Tablet landscape
-  @include between($bp-md, $bp-lg) {
-    max-width: 12ch;
   }
 
   // Mobile
   @include until($bp-md) {
     font-size: clamp(3rem, 10vw, 4.5rem);
     letter-spacing: -0.03em;
-    max-width: 11ch;
+    line-height: 1;
   }
 }
 
@@ -92,11 +89,11 @@
   display: block;
   overflow: hidden;
   padding-block: 0.04em;
-  line-height: inherit;
+  line-height: inherit; 
 }
 
 .lineInner {
-  display: block;
+  display: inline-block;
   will-change: transform, opacity;
   transform-origin: 50% 100%;
 }
