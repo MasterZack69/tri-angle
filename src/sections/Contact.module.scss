@@ -1,33 +1,249 @@
 @use '@/styles/abstracts' as *;
 
 .contact {
-  @include section;
+  position: relative;
   border-top: 1px solid var(--color-border);
-  min-height: 80svh;
-  display: flex;
-  align-items: center;
+  background: var(--color-bg);
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40vh;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.7) 0%,
+      transparent 100%
+    );
+    z-index: 0;
+  }
 }
 
 .inner {
   @include container;
+  position: relative;
+  z-index: 1;
+  min-height: 80svh;
+  display: grid;
+  align-content: center;
+  gap: clamp(3rem, 6vw, 5rem);
+  padding-block: clamp(6rem, 12vw, 10rem);
+
+  @include until($bp-md) {
+    min-height: auto;
+    padding-block: $space-4xl;
+  }
+}
+
+// ── Header ──────────────────────────────────────────
+.header {
+  display: grid;
+  gap: $space-md;
+}
+
+.headerGroup {
+  display: grid;
+  gap: $space-md;
 }
 
 .index {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2xs;
   font-family: $font-mono;
   font-size: $fs-xs;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 $space-sm;
+}
+
+.indexMark {
   color: var(--color-accent);
-  margin-bottom: $space-md;
+  font-size: 1.05em;
 }
 
 .heading {
-  max-width: 14ch;
+  font-size: clamp(2.75rem, 1.8rem + 4.5vw, 6rem);
+  font-weight: $fw-display;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  color: var(--color-fg);
+  margin: 0;
+  font-synthesis: none;
+  display: grid;
+  gap: 0;
 }
 
-.placeholder {
-  margin-top: $space-xl;
-  color: var(--color-muted);
+.headingLine {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.04em;
+  line-height: inherit;
+  white-space: nowrap;
+}
+
+.headingInner {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.supporting {
+  margin-top: $space-lg;
+  max-width: 42ch;
   font-family: $font-mono;
   font-size: $fs-sm;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+  color: var(--color-fg-soft);
+}
+
+// ── Contact methods ─────────────────────────────────
+.methods {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  max-width: 720px;
+  border-top: 1px solid var(--color-border);
+}
+
+.method {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.methodLink {
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) 1fr;
+  align-items: baseline;
+  gap: $space-lg;
+  padding: $space-lg 0;
+  text-decoration: none;
+  color: inherit;
+  transition: padding-left $dur-base $ease-out-quart;
+
+  @include hover-supported {
+    &:hover {
+      padding-left: $space-md;
+
+      .methodValueText {
+        color: var(--color-fg);
+      }
+
+      .methodArrow {
+        opacity: 1;
+        transform: translateX(6px);
+        color: var(--color-accent);
+      }
+
+      .methodLabel {
+        color: var(--color-accent);
+      }
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 6px;
+    border-radius: $radius-sm;
+  }
+
+  @include until($bp-md) {
+    grid-template-columns: 1fr;
+    gap: $space-2xs;
+    padding: $space-md 0;
+
+    @include hover-supported {
+      &:hover { padding-left: 0; }
+    }
+  }
+}
+
+.methodLabel {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  transition: color $dur-base $ease-out-quart;
+}
+
+.methodValue {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-md;
+  justify-content: space-between;
+
+  @include until($bp-md) {
+    justify-content: flex-start;
+  }
+}
+
+.methodValueText {
+  font-size: clamp(1.25rem, 0.9rem + 1.2vw, 1.75rem);
+  font-weight: $fw-medium;
+  letter-spacing: -0.02em;
+  color: var(--color-accent);
+  transition: color $dur-base $ease-out-quart;
+  font-synthesis: none;
+}
+
+.methodArrow {
+  font-size: 1.1rem;
+  color: var(--color-muted);
+  opacity: 0.5;
+  transition:
+    transform $dur-base $ease-out-quart,
+    color $dur-base $ease-out-quart,
+    opacity $dur-base $ease-out-quart;
+}
+
+// ── Footer ──────────────────────────────────────────
+.footer {
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.footerInner {
+  @include container;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $space-md;
+  padding-block: $space-xl;
+
+  @include until($bp-sm) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-sm;
+    padding-block: $space-lg;
+  }
+}
+
+.footerBrand,
+.footerNote {
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.footerBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2xs;
+  color: var(--color-fg-soft);
+}
+
+.footerMark {
+  color: var(--color-accent);
+  font-size: 1.05em;
 }

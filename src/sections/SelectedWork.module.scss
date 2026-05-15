@@ -14,8 +14,19 @@
   font-size: $fs-xs;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--color-muted);
   margin-bottom: $space-md;
+}
+
+.indexMark {
+  color: var(--color-accent);
+}
+
+.intro {
+  display: grid;
+  gap: $space-md;
+  max-width: 64ch;
+  margin-bottom: clamp(4rem, 7vw, 7rem);
 }
 
 .heading {

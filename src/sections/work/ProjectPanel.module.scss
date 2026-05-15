@@ -92,10 +92,10 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 1.4s $ease-out-quart;
+  transition: transform 700ms $ease-out-quart;
 
   .frameLink:hover & {
-    transform: scale(1.04);
+    transform: scale(1.035);
   }
 
   @include reduced-motion {
@@ -301,7 +301,8 @@
 }
 
 .stack {
-  display: flex;
+  display: flex !important;
+  flex-direction: row !important;
   flex-wrap: wrap;
   gap: $space-2xs;
   margin: $space-2xs 0 0;
@@ -315,13 +316,17 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-fg-soft);
-  padding: $space-3xs $space-xs;
+  padding: 0.3rem 0.8rem;
+  margin: 0.3rem !important;
   border: 1px solid var(--color-border);
   border-radius: $radius-full;
   background: rgba(255, 255, 255, 0.015);
   transition: border-color $dur-base $ease-out-quart;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  list-style: none;
 
-  .frameLink:hover ~ * &,
   .panel:hover & {
     border-color: rgba(200, 16, 46, 0.25);
   }

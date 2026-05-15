@@ -1,4 +1,8 @@
 ---
+import RevealGroup from '@components/motion/RevealGroup';
+import RevealItem from '@components/motion/RevealItem';
+import RevealLines from '@components/motion/RevealLines';
+import RevealFade from '@components/motion/RevealFade';
 import ProjectPanel from './work/ProjectPanel.astro';
 import type { Project } from './work/ProjectPanel.astro';
 import styles from './SelectedWork.module.scss';
@@ -33,29 +37,35 @@ const PROJECTS: readonly Project[] = [
 
 <section id="work" class={styles.work} aria-label="Selected Work">
   <div class={styles.inner}>
-    <!-- ── Intro ──────────────────────────────── -->
     <header class={styles.intro}>
-      <p class={styles.index} data-reveal>
-        <span class={styles.indexMark} aria-hidden="true">△</span>
-        02 — Selected Work
-      </p>
+      <RevealGroup client:visible className={styles.introGroup} stagger={0.1}>
+        <RevealItem as="p" className={styles.index}>
+          <span class={styles.indexMark} aria-hidden="true">△</span>
+          02 — Selected Work
+        </RevealItem>
 
-      <p
-        class={styles.supporting}
-        data-reveal
-        style="--reveal-delay: 320ms"
-      >
-      </p>
+        <RevealLines
+          client:visible
+          lines={['Systems we’ve built.']}
+          as="h2"
+          className={styles.heading}
+          lineClassName={styles.headingLine}
+          innerClassName={styles.headingInner}
+          playKey="work-heading"
+        />
+
+      </RevealGroup>
     </header>
 
-    <!-- ── Projects ───────────────────────────── -->
     <div class={styles.projects}>
       {
         PROJECTS.map((project, i) => (
           <ProjectPanel
             project={project}
             orientation={i % 2 === 0 ? 'left' : 'right'}
-            delay={i * 40}
           />
         ))
       }
+    </div>
+   <footer class={styles.closer}>
+</footer>

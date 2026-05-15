@@ -5,7 +5,7 @@ import { easeCinematic } from '@lib/motion';
 interface Props {
   readonly children: ReactNode;
   readonly className?: string;
-  readonly as?: 'div' | 'li' | 'p' | 'h2' | 'h3';
+  readonly as?: 'div' | 'li' | 'p' | 'h2' | 'h3' | 'ul' | 'ol';
   readonly offset?: number;
   readonly duration?: number;
 }
@@ -16,6 +16,8 @@ const MOTION_TAG = {
   p: motion.p,
   h2: motion.h2,
   h3: motion.h3,
+  ul: motion.ul,
+  ol: motion.ol,
 } as const;
 
 const itemVariants = (offset: number, duration: number): Variants => ({

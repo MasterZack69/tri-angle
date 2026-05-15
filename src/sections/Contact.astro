@@ -1,11 +1,96 @@
 ---
+import RevealGroup from '@components/motion/RevealGroup';
+import RevealItem from '@components/motion/RevealItem';
+import RevealLines from '@components/motion/RevealLines';
+import RevealFade from '@components/motion/RevealFade';
 import styles from './Contact.module.scss';
+
+interface ContactMethod {
+  readonly label: string;
+  readonly value: string;
+  readonly href: string;
+}
+
+const CONTACT_METHODS: readonly ContactMethod[] = [
+  {
+    label: 'Email',
+    value: 'placeholder',
+    href: 'placeholder',
+  },
+  {
+    label: 'Telegram',
+    value: '@BabaZack',
+    href: 'https://t.me/BabaZack',
+  },
+];
+
+const YEAR = new Date().getFullYear();
 ---
 
 <section id="contact" class={styles.contact} aria-label="Contact">
   <div class={styles.inner}>
-    <p class={styles.index}>03 — Contact</p>
-    <h2 class={styles.heading}>Let's work together.</h2>
-    <p class={styles.placeholder}>Placeholder section.</p>
+    <!-- ── Headline block ───────────────────── -->
+    <header class={styles.header}>
+      <RevealGroup client:visible className={styles.headerGroup} stagger={0.12}>
+        <RevealItem as="p" className={styles.index}>
+          <span class={styles.indexMark} aria-hidden="true">△</span>
+          03 — Contact
+        </RevealItem>
+
+        <RevealLines
+          client:visible
+          lines={['Ready when', 'you are.']}
+          as="h2"
+          className={styles.heading}
+          lineClassName={styles.headingLine}
+          innerClassName={styles.headingInner}
+          playKey="contact-heading"
+        />
+
+        <RevealItem as="p" className={styles.supporting}>
+          Your request is our command. At a reasonable price of course.
+        </RevealItem>
+      </RevealGroup>
+    </header>
+
+    <!-- ── Contact methods ──────────────────── -->
+    <RevealGroup
+      client:visible
+      as="ul"
+      className={styles.methods}
+      stagger={0.09}
+      delay={0.2}
+    >
+      {CONTACT_METHODS.map((method) => {
+        const isExternal = method.href.startsWith('http');
+        return (
+          <RevealItem as="li" className={styles.method}>
+            <a
+              class={styles.methodLink}
+              href={method.href}
+              target={isExternal ? '_blank' : undefined}
+              rel={isExternal ? 'noopener noreferrer' : undefined}
+            >
+              <span class={styles.methodLabel}>{method.label}</span>
+              <span class={styles.methodValue}>
+                <span class={styles.methodValueText}>{method.value}</span>
+                <span class={styles.methodArrow} aria-hidden="true">→</span>
+              </span>
+            </a>
+          </RevealItem>
+        );
+      })}
+    </RevealGroup>
   </div>
+
+  <!-- ── Footer ─────────────────────────────── -->
+  <footer class={styles.footer}>
+    <RevealFade client:visible className={styles.footerInner}>
+      <p class={styles.footerBrand}>
+        <span class={styles.footerMark} aria-hidden="true">△</span>
+        Tri-Angle © {YEAR}
+      </p>
+      <p class={styles.footerNote}>Engineered with precision.</p>
+    </RevealFade>
+  </footer>
 </section>
