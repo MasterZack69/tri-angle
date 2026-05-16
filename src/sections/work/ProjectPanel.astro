@@ -1,7 +1,8 @@
 ---
+import RevealSlide from '@components/motion/RevealSlide';
+import RevealScale from '@components/motion/RevealScale';
 import RevealGroup from '@components/motion/RevealGroup';
 import RevealItem from '@components/motion/RevealItem';
-import RevealScale from '@components/motion/RevealScale';
 import styles from './ProjectPanel.module.scss';
 
 export interface Project {
@@ -25,21 +26,55 @@ interface Props {
 const { project, orientation = 'left' } = Astro.props;
 const reverseClass = orientation === 'right' ? styles.reverse : '';
 const isExternal = project.url?.startsWith('http');
+
+// Image enters from its own side, body enters from the opposite side
+const imageDirection = orientation === 'left' ? 'left' : 'right';
+const bodyDirection = orientation === 'left' ? 'right' : 'left';
 ---
 
 <article
   class={`${styles.panel} ${reverseClass}`}
   aria-labelledby={`work-${project.slug}`}
 >
-  <figure class={styles.visual}>
-    {project.url ? (
-      <a
-        href={project.url}
-        class={styles.frameLink}
-        target={isExternal ? '_blank' : undefined}
-        rel={isExternal ? 'noopener noreferrer' : undefined}
-        aria-label={`View ${project.name} project`}
-      >
+  <!-- ── Visual side: slides in from its edge, frame scales in ── -->
+  <RevealSlide
+    client:visible
+    direction={imageDirection}
+    className={styles.visualWrap}
+  >
+    <figure class={styles.visual}>
+      {project.url ? (
+        <a
+          href={project.url}
+          class={styles.frameLink}
+          target={isExternal ? '_blank' : undefined}
+          rel={isExternal ? 'noopener noreferrer' : undefined}
+          aria-label={`View ${project.name} project`}
+        >
+          <RevealScale client:visible className={styles.frame}>
+            {project.image ? (
+              <img
+                src={project.image}
+                alt={project.imageAlt ?? `${project.name} preview`}
+                class={styles.image}
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <div class={styles.imageFallback} aria-hidden="true">
+                <span class={styles.fallbackIndex}>{project.index}</span>
+              </div>
+            )}
+            <div class={styles.frameOverlay} aria-hidden="true"></div>
+            <div class={styles.frameHover} aria-hidden="true">
+              <span class={styles.frameHoverLabel}>
+                View Project
+                <span class={styles.frameHoverArrow}>→</span>
+              </span>
+            </div>
+          </RevealScale>
+        </a>
+      ) : (
         <RevealScale client:visible className={styles.frame}>
           {project.image ? (
             <img
@@ -55,77 +90,59 @@ const isExternal = project.url?.startsWith('http');
             </div>
           )}
           <div class={styles.frameOverlay} aria-hidden="true"></div>
-          <div class={styles.frameHover} aria-hidden="true">
-            <span class={styles.frameHoverLabel}>
-              View Project
-              <span class={styles.frameHoverArrow}>→</span>
-            </span>
-          </div>
         </RevealScale>
-      </a>
-    ) : (
-      <RevealScale client:visible className={styles.frame}>
-        {project.image ? (
-          <img
-            src={project.image}
-            alt={project.imageAlt ?? `${project.name} preview`}
-            class={styles.image}
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <div class={styles.imageFallback} aria-hidden="true">
-            <span class={styles.fallbackIndex}>{project.index}</span>
-          </div>
-        )}
-        <div class={styles.frameOverlay} aria-hidden="true"></div>
-      </RevealScale>
-    )}
-
-    <figcaption class={styles.caption}>
-      <span class={styles.captionItem}>
-        <span class={styles.captionLabel}>Year</span>
-        <span class={styles.captionValue}>{project.year}</span>
-      </span>
-      <span class={styles.captionItem}>
-        <span class={styles.captionLabel}>Type</span>
-        <span class={styles.captionValue}>{project.category}</span>
-      </span>
-    </figcaption>
-  </figure>
-
-  <RevealGroup client:visible className={styles.body} stagger={0.08}>
-    <RevealItem as="p" className={styles.index}>
-      <span class={styles.indexMark} aria-hidden="true">△</span>
-      Project {project.index}
-    </RevealItem>
-
-    <RevealItem as="h3" className={styles.name}>
-      <span id={`work-${project.slug}`}></span>
-      {project.url ? (
-        <a
-          href={project.url}
-          class={styles.nameLink}
-          target={isExternal ? '_blank' : undefined}
-          rel={isExternal ? 'noopener noreferrer' : undefined}
-        >
-          {project.name}
-        </a>
-      ) : (
-        project.name
       )}
-    </RevealItem>
 
-    <RevealItem as="p" className={styles.description}>
-      {project.description}
-    </RevealItem>
+      <figcaption class={styles.caption}>
+        <span class={styles.captionItem}>
+          <span class={styles.captionLabel}>Year</span>
+          <span class={styles.captionValue}>{project.year}</span>
+        </span>
+        <span class={styles.captionItem}>
+          <span class={styles.captionLabel}>Type</span>
+          <span class={styles.captionValue}>{project.category}</span>
+        </span>
+      </figcaption>
+    </figure>
+  </RevealSlide>
 
-    <RevealItem as="div" className={styles.stack}>
-      <ul class={styles.stackList}>
+  <!-- ── Body side: slides in from opposite edge, items stagger ── -->
+  <RevealSlide
+    client:visible
+    direction={bodyDirection}
+    className={styles.bodyWrap}
+    delay={0.1}
+  >
+    <RevealGroup client:visible className={styles.body} stagger={0.08}>
+      <RevealItem as="p" className={styles.index}>
+        <span class={styles.indexMark} aria-hidden="true">△</span>
+        Project {project.index}
+      </RevealItem>
+
+      <RevealItem as="h3" className={styles.name}>
+        {project.url ? (
+          <a
+            href={project.url}
+            class={styles.nameLink}
+            target={isExternal ? '_blank' : undefined}
+            rel={isExternal ? 'noopener noreferrer' : undefined}
+          >
+            {project.name}
+          </a>
+        ) : (
+          project.name
+        )}
+      </RevealItem>
+
+      <RevealItem as="p" className={styles.description}>
+        {project.description}
+      </RevealItem>
+
+      <RevealItem as="ul" className={styles.stack}>
         {project.stack.map((tech) => (
           <li class={styles.stackItem}>{tech}</li>
         ))}
-      </ul>
-    </RevealItem>
-  </RevealGroup>
+      </RevealItem>
+    </RevealGroup>
+  </RevealSlide>
 </article>
