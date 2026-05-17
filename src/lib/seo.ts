@@ -7,7 +7,7 @@ export const SITE = {
     'Tri-Angle is an Independent freelancing agency. We do what the client wants us to do. From E-commerce to simple blog site, anything you want us to do, we are here for it.',
   locale: 'en_US',
   themeColor: '#050505',
-  ogImage: 'placeholder',
+  ogImage: '/favicon.ico',
   ogImageAlt: 'Tri-Angle',
 } as const;
 
