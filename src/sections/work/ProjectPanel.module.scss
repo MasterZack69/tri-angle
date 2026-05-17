@@ -5,13 +5,14 @@
   grid-template-columns: 1fr;
   gap: $space-xl;
   align-items: center;
+  overflow: hidden;
 
   @include until($bp-lg) {
-    .visual {
+    .visualWrap {
       order: 2;
       margin-top: $space-md;
     }
-    .body {
+    .bodyWrap {
       order: 1;
     }
   }
@@ -25,26 +26,35 @@
     @include from($bp-lg) {
       grid-template-columns: 1fr 1.35fr;
 
-      .visual {
+      .visualWrap {
         order: 2;
       }
 
-      .body {
+      .bodyWrap {
         order: 1;
-        text-align: right;
-        justify-self: end;
 
-        .index,
-        .stack {
-          justify-content: flex-end;
-        }
+        .body {
+          text-align: right;
+          justify-self: end;
 
-        .description {
-          margin-left: auto;
+          .index,
+          .stack {
+            justify-content: flex-end;
+          }
+
+          .description {
+            margin-left: auto;
+          }
         }
       }
     }
   }
+}
+
+.visualWrap,
+.bodyWrap {
+  min-width: 0;
+  width: 100%;
 }
 
 // ── Visual ─────────────────────────────────────────────
