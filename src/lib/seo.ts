@@ -27,5 +27,5 @@ export const KEYWORDS = [
 
 export const SOCIAL = {
   telegram: 'https://t.me/BabaZack',
-  email: 'placeholder',
+  email: 'contact@tri-angle.tech',
 } as const;
