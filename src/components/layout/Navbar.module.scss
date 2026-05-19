@@ -98,6 +98,6 @@
   }
 
   @include until($bp-sm) {
-    display: none;
+    padding: $space-3xs $space-sm;
   }
 }
