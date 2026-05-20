@@ -1,10 +1,12 @@
-import type { Transition, Variants } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 
-export const easeCinematic: Transition['ease'] = [0.22, 1, 0.36, 1];
-export const easeSoft: Transition['ease'] = [0.32, 0.72, 0, 1];
-export const easeOutExpo: Transition['ease'] = [0.16, 1, 0.3, 1];
-export const easeOutQuart: Transition['ease'] = [0.25, 1, 0.5, 1];
-export const easeInOutQuart: Transition['ease'] = [0.76, 0, 0.24, 1];
+type CubicBezier = readonly [number, number, number, number];
+
+export const easeCinematic: CubicBezier = [0.22, 1, 0.36, 1];
+export const easeSoft: CubicBezier = [0.32, 0.72, 0, 1];
+export const easeOutExpo: CubicBezier = [0.16, 1, 0.3, 1];
+export const easeOutQuart: CubicBezier = [0.25, 1, 0.5, 1];
+export const easeInOutQuart: CubicBezier = [0.76, 0, 0.24, 1];
 
 export const REVEAL_TIMING = {
   delayBase: 0.18,

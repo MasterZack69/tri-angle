@@ -25,11 +25,6 @@ const STATIC_TAG = {
   ul: 'ul',
 } as const;
 
-/**
- * Single hydration boundary that staggers the reveal of its children.
- * Per-child motion is defined by <RevealItem>. Children opt in by
- * being a <RevealItem> (or any motion element using the same variant keys).
- */
 export default function RevealGroup({
   children,
   className,
