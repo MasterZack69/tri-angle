@@ -29,10 +29,6 @@
   margin-bottom: clamp(4rem, 7vw, 7rem);
 }
 
-.heading {
-  max-width: 18ch;
-}
-
 .placeholder {
   margin-top: $space-xl;
   color: var(--color-muted);
@@ -77,4 +73,32 @@
       width: min(60%, 320px);
     }
   }
+}
+
+.heading {
+  font-size: clamp(2rem, 1.6rem + 2.4vw, 3.4rem);
+  font-weight: $fw-display;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--color-fg);
+  max-width: 22ch;
+  margin: 0;
+  font-synthesis: none;
+  display: grid;
+  gap: 0.04em;
+}
+
+.headingLine {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.05em;
+  line-height: inherit;
+}
+
+.headingInner {
+  display: inline-block;
+  white-space: nowrap;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
