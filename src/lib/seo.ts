@@ -21,8 +21,9 @@ export const KEYWORDS = [
   'Next.js',
   'Astro',
   'React',
-  'WebGL',
-  'Three.js',
+  'triangle freelance',
+  'web dev',
+  'web dev agency',
 ] as const;
 
 export const SOCIAL = {
