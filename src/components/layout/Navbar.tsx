@@ -9,6 +9,7 @@ interface NavLink {
 }
 
 const NAV_LINKS: readonly NavLink[] = [
+  { label: 'About', href: '#about' },
   { label: 'Capabilities', href: '#capabilities' },
   { label: 'Work', href: '#work' },
   { label: 'Contact', href: '#contact' },

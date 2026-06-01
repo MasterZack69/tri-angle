@@ -1,0 +1,272 @@
+@use '@/styles/abstracts' as *;
+
+.about {
+  @include section;
+  @include section-atmosphere;
+  position: relative;
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
+}
+
+.inner {
+  @include container;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-2xl;
+
+  @include from($bp-lg) {
+    grid-template-columns: minmax(260px, 360px) 1fr;
+    column-gap: $space-3xl;
+    row-gap: $space-2xl;
+  }
+}
+
+.lede {
+  position: relative;
+
+  @include from($bp-lg) {
+    position: sticky;
+    top: calc(var(--nav-height) + #{$space-xl});
+    align-self: start;
+  }
+}
+
+.index {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2xs;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: $space-lg;
+}
+
+.indexMark {
+  color: var(--color-accent);
+  font-size: 1.05em;
+}
+
+.heading {
+  font-size: clamp(2rem, 1.6rem + 2.4vw, 3.4rem);
+  font-weight: $fw-display;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  color: var(--color-fg);
+  max-width: 14ch;
+  margin: 0 0 $space-lg;
+}
+
+.headingAccent {
+  color: var(--color-fg-soft);
+}
+
+.supporting {
+  max-width: 38ch;
+  color: var(--color-fg-soft);
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.01em;
+  line-height: 1.55;
+}
+
+// ── Right column — vertices grid ──────────────────────────
+.content {
+  display: grid;
+  gap: $space-2xl;
+}
+
+.introText {
+  font-family: $font-sans;
+  font-size: $fs-md;
+  line-height: 1.55;
+  color: var(--color-fg-soft);
+  max-width: 60ch;
+  margin: 0 0 $space-sm 0;
+
+  strong {
+    color: var(--color-fg);
+    font-weight: $fw-semibold;
+  }
+}
+
+.grid {
+  display: grid;
+  gap: $space-lg;
+
+  @include from($bp-md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-md;
+  padding: $space-xl $space-lg $space-lg;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  transition: 
+    border-color $dur-base $ease-out-quart,
+    transform $dur-base $ease-out-quart;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+    opacity: 0;
+    transition: opacity $dur-base $ease-out-quart;
+    z-index: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle 120px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(200, 16, 46, 0.04) 0%,
+      transparent 100%
+    );
+    opacity: 0;
+    transition: opacity $dur-base $ease-out-quart;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  @include hover-supported {
+    &:hover {
+      border-color: rgba(200, 16, 46, 0.35);
+      transform: translateY(-4px);
+
+      &::before {
+        opacity: 1;
+      }
+
+      &::after {
+        opacity: 1;
+      }
+
+      .diagram {
+        opacity: 0.85;
+      }
+
+      .cardIndex {
+        color: var(--color-accent);
+      }
+    }
+  }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.cardIndex {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+  transition: color $dur-base $ease-out-quart;
+}
+
+// Subtle interactive geometric diagram representing the triangle vertices
+.diagram {
+  width: 44px;
+  height: 44px;
+  opacity: 0.4;
+  color: var(--color-fg-soft);
+  transition: opacity $dur-base $ease-out-quart;
+
+  polyline {
+    stroke: var(--color-border);
+    stroke-width: 1.5px;
+    fill: none;
+  }
+
+  circle {
+    fill: var(--color-muted);
+    transition: fill $dur-base $ease-out-quart, r $dur-base $ease-out-quart;
+  }
+
+  .activeVertex {
+    fill: var(--color-accent);
+    r: 4.5px;
+    filter: drop-shadow(0 0 4px var(--color-accent));
+    animation: vertexPulse 2s infinite ease-in-out;
+  }
+}
+
+.cardTitle {
+  font-size: $fs-md;
+  font-weight: $fw-semibold;
+  letter-spacing: -0.015em;
+  color: var(--color-fg);
+  margin: 0;
+}
+
+.cardDescription {
+  font-family: $font-sans;
+  font-size: $fs-sm;
+  line-height: 1.55;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+@keyframes vertexPulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+    r: 5.5px;
+  }
+}
+
+// ── Key Metrics Bar ───────────────────────────────────────
+.metrics {
+  margin-top: $space-lg;
+  padding-top: $space-xl;
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: $space-lg;
+  grid-template-columns: repeat(2, 1fr);
+
+  @include from($bp-md) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3xs;
+}
+
+.metricValue {
+  font-family: $font-mono;
+  font-size: $fs-lg;
+  font-weight: $fw-bold;
+  color: var(--color-fg);
+  letter-spacing: -0.02em;
+}
+
+.metricLabel {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
