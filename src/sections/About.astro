@@ -1,0 +1,119 @@
+---
+import RevealGroup from '@components/motion/RevealGroup';
+import RevealItem from '@components/motion/RevealItem';
+import styles from './About.module.scss';
+
+interface VertexCard {
+  readonly index: string;
+  readonly title: string;
+  readonly description: string;
+  readonly activeIndex: number;
+}
+
+const VERTICES: readonly VertexCard[] = [
+  {
+    index: '01 / BASE',
+    title: 'Performance',
+    description: 'Lightweight architectures, clean code discipline, and optimized networks. We target 100% Lighthouse scores and sub-150ms response times.',
+    activeIndex: 0,
+  },
+  {
+    index: '02 / APEX',
+    title: 'Precision',
+    description: 'High-fidelity translations of design to responsive interactive code. We build custom motion systems that feel fluid and natural.',
+    activeIndex: 1,
+  },
+  {
+    index: '03 / FOCUS',
+    title: 'Purpose',
+    description: 'Bespoke alignment to your goals. Whether it is e-commerce, custom integrations, or simple blogs, we build what serves you best.',
+    activeIndex: 2,
+  },
+];
+
+const METRICS = [
+  { value: '100%', label: 'Performance target' },
+  { value: '<150ms', label: 'Interaction delay' },
+  { value: 'Zero', label: 'Template dependency' },
+  { value: '24/7', label: 'Direct communication' },
+];
+---
+
+<section id="about" class={styles.about} aria-label="About Tri-Angle">
+  <div class={styles.inner}>
+    <!-- ── Left column — intro ────────────────── -->
+    <RevealGroup client:visible as="aside" className={styles.lede} stagger={0.1}>
+      <RevealItem as="p" className={styles.index}>
+        <span class={styles.indexMark} aria-hidden="true">△</span>
+        01 — About
+      </RevealItem>
+
+      <RevealItem as="h2" className={styles.heading}>
+        Deliberate code.<br />
+        <span class={styles.headingAccent}>Flawless motion.</span>
+      </RevealItem>
+
+      <RevealItem as="p" className={styles.supporting}>
+        Tri-Angle is a digital design and engineering agency. We form the intersection of technical excellence and creative expression.
+      </RevealItem>
+    </RevealGroup>
+
+    <!-- ── Right column — Content ────────────────── -->
+    <div class={styles.content}>
+      <RevealItem client:visible as="p" className={styles.introText}>
+        We believe the web should be <strong>fast, tactile, and expressive</strong>. As an independent agency, we partner directly with founders and teams to build tailormade platforms, high-speed storefronts, and bespoke interactive systems. No bloated page builders, no template shortcuts.
+      </RevealItem>
+
+      <!-- Vertices Grid -->
+      <div class={styles.grid}>
+        {
+          VERTICES.map((vertex) => (
+            <div class={styles.card} data-card>
+              <div class={styles.cardHeader}>
+                <span class={styles.cardIndex}>{vertex.index}</span>
+                <svg class={styles.diagram} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <!-- The Triangle -->
+                  <polyline points="20,6 6,34 34,34 20,6" />
+                  <!-- Vertices dots -->
+                  <circle cx="6" cy="34" r="3" class={vertex.activeIndex === 0 ? styles.activeVertex : ''} />
+                  <circle cx="20" cy="6" r="3" class={vertex.activeIndex === 1 ? styles.activeVertex : ''} />
+                  <circle cx="34" cy="34" r="3" class={vertex.activeIndex === 2 ? styles.activeVertex : ''} />
+                </svg>
+              </div>
+              <h3 class={styles.cardTitle}>{vertex.title}</h3>
+              <p class={styles.cardDescription}>{vertex.description}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- Key Metrics -->
+      <RevealGroup client:visible className={styles.metrics} stagger={0.06}>
+        {
+          METRICS.map((metric) => (
+            <RevealItem as="div" className={styles.metric}>
+              <span class={styles.metricValue}>{metric.value}</span>
+              <span class={styles.metricLabel}>{metric.label}</span>
+            </RevealItem>
+          ))
+        }
+      </RevealGroup>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Dynamic glow tracking for cards
+  const cards = document.querySelectorAll('[data-card]');
+  cards.forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      const htmlCard = card as HTMLElement;
+      const mouseEvent = e as MouseEvent;
+      const rect = htmlCard.getBoundingClientRect();
+      const x = mouseEvent.clientX - rect.left;
+      const y = mouseEvent.clientY - rect.top;
+      htmlCard.style.setProperty('--mouse-x', `${x}px`);
+      htmlCard.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+</script>
